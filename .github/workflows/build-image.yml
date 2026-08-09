@@ -1,12 +1,11 @@
 name: Build and Publish amd64 Image
 
-# 触发方式：
-#   - 手动：Actions 页面点 Run workflow（可用任意分支）
-#   - 自动：push 到 main，或推送 v* 标签
+# 触发方式（自用分支构建，main 保持与上游同步、不改动）：
+#   - 自动：push 到 ci/ghcr-image 分支（或推送 v* 标签）
+#   - 如需手动触发：把 workflow_dispatch 恢复为启用，并临时把该文件合入 main 后再使用
 on:
-  workflow_dispatch:
   push:
-    branches: [main]
+    branches: [ci/ghcr-image]
     tags: ['v*']
 
 # 产物：ghcr.io/<GitHub用户名>/antigravity-manager:<tag>

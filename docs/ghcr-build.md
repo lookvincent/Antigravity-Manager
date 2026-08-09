@@ -18,16 +18,19 @@
 触发方式：
 | 触发 | 生成的 tag |
 |---|---|
-| 推送 `main` 分支 | `latest` |
+| 推送 `ci/ghcr-image` 分支 | 12 位短提交号 |
 | 推送 `v*` 标签（如 `v4.5.2-fix`） | 标签名 |
-| 手动 Run workflow（任意分支） | 12 位短提交号 |
 
 构建产物：`ghcr.io/<GitHub用户名>/antigravity-manager:<tag>`
+
+> 设计说明：`main` 分支保持与上游 `lbjlaq/Antigravity-Manager` 同步、不做自用改动；
+> 镜像构建在工作流所在的自用分支（如 `ci/ghcr-image`）上推送触发。这样同步上游、
+> 以及以后从干净的 `main` 派生分支向上游提 PR 都不会被自用文件干扰。
 
 ## 使用步骤
 
 1. 把本仓库推送到你自己的 GitHub 仓库（fork 即可）。
-2. 在 GitHub 仓库页 **Actions** → 选择 **Build and Publish amd64 Image** → **Run workflow**（或直接推送 `main` / 标签自动触发）。
+2. 推送 `ci/ghcr-image` 分支（或 `v*` 标签）自动触发构建。
 3. 等构建完成（约 20~30 分钟，第一次会久一些）。
 
 ## 在服务器上部署
