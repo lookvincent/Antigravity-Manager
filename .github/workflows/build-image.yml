@@ -1,0 +1,58 @@
+name: Build and Publish amd64 Image
+
+# 触发方式：
+#   - 手动：Actions 页面点 Run workflow（可用任意分支）
+#   - 自动：push 到 main，或推送 v* 标签
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    tags: ['v*']
+
+# 产物：ghcr.io/<GitHub用户名>/antigravity-manager:<tag>
+#   tag: 标签名（v*） / latest（main） / 短提交号（手动触发）
+env:
+  IMAGE_NAME: antigravity-manager
+
+jobs:
+  build:
+    runs-on: ubuntu-latest          # x86_64 原生 runner，原生构建 amd64 镜像
+    permissions:
+      contents: read
+      packages: write               # 允许推送到 GHCR（GITHUB_TOKEN 自动授权，无需账号密码）
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Compute image tag
+        id: meta
+        run: |
+          if [[ "$GITHUB_REF" == refs/tags/* ]]; then
+            TAG="${GITHUB_REF#refs/tags/}"
+          elif [[ "$GITHUB_REF" == refs/heads/main ]]; then
+            TAG="latest"
+          else
+            TAG="${GITHUB_SHA::12}"
+          fi
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: docker/Dockerfile
+          platforms: linux/amd64     # 服务器 x86_64；如需要 arm64 可改为 "linux/amd64,linux/arm64"
+          push: true
+          tags: ghcr.io/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}:${{ steps.meta.outputs.tag }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
