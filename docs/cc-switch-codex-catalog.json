@@ -342,6 +342,64 @@
       "service_tiers": [],
       "availability_nux": null,
       "upgrade": null
+    },
+    {
+      "additional_speed_tiers": [],
+      "availability_nux": null,
+      "base_instructions": "You are Codex, a coding agent. You and the user share the same workspace and collaborate to achieve the user's goals.",
+      "context_window": 1048576,
+      "default_reasoning_level": "high",
+      "default_reasoning_summary": "none",
+      "description": "deepseek-v4-pro",
+      "display_name": "deepseek-v4-pro",
+      "effective_context_window_percent": 95,
+      "experimental_supported_tools": [],
+      "input_modalities": [
+        "text"
+      ],
+      "max_context_window": 1048576,
+      "priority": 7,
+      "service_tiers": [],
+      "shell_type": "shell_command",
+      "slug": "deepseek-v4-pro",
+      "support_verbosity": true,
+      "supported_in_api": true,
+      "supported_reasoning_levels": [
+        {
+          "effort": "low",
+          "description": "Fast responses with lighter reasoning"
+        },
+        {
+          "effort": "high",
+          "description": "Extra high reasoning depth for complex problems"
+        },
+        {
+          "effort": "max",
+          "description": "Maximum reasoning depth for the hardest problems"
+        }
+      ],
+      "supports_image_detail_original": false,
+      "supports_parallel_tool_calls": true,
+      "supports_reasoning_summaries": true,
+      "supports_search_tool": true,
+      "truncation_policy": {
+        "mode": "tokens",
+        "limit": 10000
+      },
+      "upgrade": null,
+      "visibility": "list",
+      "default_verbosity": "low",
+      "apply_patch_tool_type": "freeform",
+      "web_search_tool_type": "text",
+      "minimal_client_version": "0.144.0",
+      "prefer_websockets": false,
+      "tool_mode": null,
+      "multi_agent_version": "v2",
+      "use_responses_lite": false,
+      "include_skills_usage_instructions": false,
+      "auto_review_model_override": null,
+      "comp_hash": "3000",
+      "reasoning_summary_format": "experimental"
     }
   ]
 }
